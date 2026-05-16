@@ -10,8 +10,8 @@ const cinzel = Cinzel({
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Zal\'Toryn - Die Stadt der Tausend Spinnen',
-  description: 'Eine drowische Stadt im Underdark für D&D 3.5 - Entdecke die Geheimnisse der Drow',
+  title: 'Zul\'Chamber - Das Echo der Sklaven',
+  description: 'Eine Drow-Metropole im Unterreich, kontrolliert von Mind Flayern - D&D 3.5 Abenteuer fuer Stufe 10',
   generator: 'v0.app',
   icons: {
     icon: [

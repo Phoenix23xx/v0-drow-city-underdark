@@ -1,10 +1,20 @@
 import { SpiderIcon } from "./spider-icon"
+import Image from "next/image"
 
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-accent/5" />
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Drow%20Bilder%201-REq9fVI6A0yCR7GdjgeIVw99HWuhHM.jpeg"
+          alt="Zul'Chamber - Die Drow-Metropole im Unterreich"
+          fill
+          className="object-cover opacity-40"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+      </div>
       
       {/* Animated web pattern */}
       <div className="absolute inset-0 opacity-5">
@@ -22,22 +32,37 @@ export function HeroSection() {
         </div>
         
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-wider mb-4 text-balance">
-          Zal&apos;Toryn
+          Zul&apos;Chamber
         </h1>
         
-        <p className="text-xl sm:text-2xl md:text-3xl text-primary mb-8 tracking-widest">
-          Die Stadt der Tausend Spinnen
+        <p className="text-xl sm:text-2xl md:text-3xl text-primary mb-6 tracking-widest">
+          Das Echo der Sklaven
+        </p>
+
+        <p className="text-base sm:text-lg text-accent mb-8 tracking-wide font-medium">
+          Ein D&D 3.5 Abenteuer fuer Stufe 10
         </p>
         
-        <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed text-pretty">
-          Tief im Underdark, eingebettet in eine gewaltige Hoehle, deren Decke mit phosphoreszierenden 
-          Pilzen und magischen Fackeln in violetten, blauen und roten Toenen erleuchtet ist.
+        <p className="text-muted-foreground text-base md:text-lg max-w-3xl mx-auto mb-8 leading-relaxed text-pretty">
+          Die Drow-Metropole Zul&apos;Chamber wird insgeheim von einem Zirkel aus Mind Flayern kontrolliert, 
+          die den Drow-Matronenmuettern im Schatten Befehle erteilen. Darunter leiden die Desmodu - 
+          riesige Fledermausmenschen - als verkleidete Sklaven in den Tiefen-Minen.
+        </p>
+
+        <p className="text-muted-foreground text-sm md:text-base max-w-2xl mx-auto mb-12 leading-relaxed italic">
+          Die Spieler muessen sie befreien.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
-            href="#viertel" 
+            href="#story" 
             className="px-8 py-3 bg-primary text-primary-foreground font-medium tracking-wide hover:bg-primary/90 transition-colors"
+          >
+            Die Story
+          </a>
+          <a 
+            href="#stadt" 
+            className="px-8 py-3 border border-border text-foreground hover:border-primary hover:text-primary transition-colors tracking-wide"
           >
             Erkunde die Stadt
           </a>
@@ -45,12 +70,12 @@ export function HeroSection() {
             href="#adelshaeuser" 
             className="px-8 py-3 border border-border text-foreground hover:border-primary hover:text-primary transition-colors tracking-wide"
           >
-            Die Adelshaeuser
+            Die Acht Haeuser
           </a>
         </div>
 
         <div className="mt-16 text-sm text-muted-foreground tracking-wide">
-          D&D 3.5 Kampagnenmaterial
+          Zul&apos;Chamber - Das Unterreich - Die Desmodu
         </div>
       </div>
 

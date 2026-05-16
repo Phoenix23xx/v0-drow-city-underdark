@@ -5,10 +5,11 @@ import { SpiderIcon } from "./spider-icon"
 import { Menu, X } from "lucide-react"
 
 const navItems = [
-  { label: "Viertel", href: "#viertel" },
-  { label: "Adelshaeuser", href: "#adelshaeuser" },
+  { label: "Story", href: "#story" },
+  { label: "Die Stadt", href: "#stadt" },
+  { label: "Haeuser", href: "#adelshaeuser" },
   { label: "NSCs", href: "#nscs" },
-  { label: "Raetsel & Fallen", href: "#raetsel" },
+  { label: "Unterreich", href: "#unterreich" },
   { label: "Begegnungen", href: "#begegnungen" },
 ]
 
@@ -21,7 +22,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           <a href="#" className="flex items-center gap-3">
             <SpiderIcon className="w-8 h-8 text-primary" />
-            <span className="text-lg font-semibold tracking-wide">Zal&apos;Toryn</span>
+            <span className="text-lg font-semibold tracking-wide">Zul&apos;Chamber</span>
           </a>
 
           {/* Desktop Navigation */}

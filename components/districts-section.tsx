@@ -1,147 +1,235 @@
 "use client"
 
 import { useState } from "react"
-import { MapPin, Shield, Eye, Skull } from "lucide-react"
+import Image from "next/image"
+import { Volume2, Eye, Skull, Sparkles, AlertTriangle } from "lucide-react"
 
-const districts = [
+const cityImages = [
   {
-    id: "oberstadt",
-    name: "Qu'ellarz'orl",
-    subtitle: "Die Hohen Hoehlen",
-    icon: Eye,
-    security: "Hoechste Stufe",
-    lighting: "Violettes Continual Flame",
-    description: "Die Oberstadt thront auf natuerlichen Felspfeilern und ist nur ueber magisch gesicherte Bruecken erreichbar. Hier residieren die Adelshaeuser und die Hohepriesterin.",
-    locations: [
-      "Tempel der Lolth - Ein achteckiges Gebaeude mit dem grossen Spinnenaltar",
-      "Turm von Haus Baenre - Hoechstes Gebaeude der Stadt",
-      "Das Auge des Schattens - Magisches Observatorium"
-    ],
-    color: "primary"
+    id: "panorama",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Drow%20Bilder%201-REq9fVI6A0yCR7GdjgeIVw99HWuhHM.jpeg",
+    alt: "Panorama von Zul'Chamber - Die gesamte Stadt in der gewaltigen Hoehle",
+    title: "Die Grosse Hoehle",
+    description: "Die Stadt erstreckt sich ueber mehrere Ebenen in einer gewaltigen Hoehle. Stalaktiten haengen von der Decke, durchzogen von violettem und gruenem Faerie Fire-Licht."
   },
   {
-    id: "mittelstadt",
-    name: "Duthcloim",
-    subtitle: "Der Mittlere Weg",
-    icon: Shield,
-    security: "Regelmaessige Patrouillen",
-    lighting: "Blaues und rotes Faulicht",
-    description: "Das pulsierende Herz der Stadt, wo Handel, Religion und Militaer aufeinandertreffen. Geschaeftiges Treiben, gedaempfte Stimmen, Misstrauen ueberall.",
-    locations: [
-      "Der Schwarze Basar - Sklavenmarkt und Handelszentrum",
-      "Kaserne der Hauswaffen - Ausbildungsstaette fuer Krieger",
-      "Haus der Gifte - Alchemieladen mit zweifelhaftem Ruf",
-      "Die Schallbruecke - Verbindung zur Unterstadt"
-    ],
-    color: "accent"
+    id: "noble",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Drow%20Bilder%203-mnbtfATNcs7jtvDH1OxtB5zDP0tOgP.jpeg",
+    alt: "Das Adelsviertel mit gothischer Architektur",
+    title: "Das Adelsviertel",
+    description: "Die oberen Ebenen gehoeren den Adelshauesern. Polierter Obsidian, filigrane Turmspitzen und violett leuchtende Fenster praegen das Bild. Im Hintergrund erhebt sich ein gewaltiger Wasserfall."
   },
   {
-    id: "unterstadt",
-    name: "Braeryn",
-    subtitle: "Das Elendsviertel",
-    icon: Skull,
-    security: "Minimal",
-    lighting: "Schwaches gruenes Pilzleuchten",
-    description: "Ein Labyrinth aus verfallenen Gebaeuden, Abwasserkanaelen und vergessenen Ruinen. Hier leben Sklaven, Ausgestossene und Verzweifelte.",
-    locations: [
-      "Die Sklavenbaracken - Ueberfuellte Unterkuenfte",
-      "Ruinen von Haus Oblodra - Versteck des Magiers Szordrin",
-      "Die Versteckten Kanaele - Geheime Schleicherpfade"
-    ],
-    color: "muted"
+    id: "vertical",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Drow%20Bilder%204-J5UxvhLkGyYM8uVEyrXseRAVRTiume.jpeg",
+    alt: "Vertikale Schluchten mit Bruecken",
+    title: "Die Schluchten",
+    description: "Zul'Chamber ist vertikal gebaut. Bruecken verbinden die Ebenen, waehrend in den Tiefen das rosa-violette Gluehn der Schmelzoefen und Minen schimmert."
   },
   {
-    id: "verborgen",
-    name: "Velkyn Vel'bol",
-    subtitle: "Die Schatten-Zwischen-Welt",
-    icon: MapPin,
-    security: "Unbekannt",
-    lighting: "Unwirklich, verschwommen",
-    description: "Ein geheimer Bereich, nur Eingeweihten bekannt, mit direkter Anbindung an die Schattenebenen. Zugang nur durch den Schwarzen Spiegel oder geheime Portale.",
-    locations: [
-      "Der Schwarze Spiegel - Portal zur Schattenebene",
-      "Schrein der Vergessenen - Ort fuer verbotene Rituale"
-    ],
-    color: "primary"
+    id: "crystal",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Drow%20Bilder%202-10wA4ggrOD2JX4iSaqPsbOZiqQwVsK.jpeg",
+    alt: "Kristallhoehle mit zentraler Struktur",
+    title: "Die Kristallgrotten",
+    description: "Am Rand der Stadt liegen geheimnisvolle Kristallhoehlen mit tuerkis und violett leuchtenden Formationen. Hier wachsen die biolumineszenten Pilze und seltene Mineralien."
+  },
+  {
+    id: "temple",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Drow%20Bilder%205-dI7whxP9MalyVwB8DJJ8Zc5A89ZLZ6.jpeg",
+    alt: "Tempel der Lolth mit Spinnendesign",
+    title: "Tempel der Lolth",
+    description: "Das Herzstuck der Stadt: der Tempel der Spinnengoettin. Der Boden ist als gewaltiges Spinnennetz gestaltet, riesige Spinnenbeine aus Stein umrahmen den heiligen Ort."
   }
 ]
 
+const professions = [
+  { name: "Pilz-Kultivator", description: "Zuechtet biolumineszente Riesenpilze fuer Nahrung, Holz-Ersatz und Sporengifte. Arbeitet knietief in organischem Duenger aus Sklaven-Faekalien." },
+  { name: "Spinnen-Melker", description: "Extrahiert hochgiftiges Sekret aus den Beisswerkzeugen von Riesenspinnen. Traegt saeureresistente Lederkleidung, hat vernarbte, zitternde Haende." },
+  { name: "Netz-Weber", description: "Verarbeitet Lolth-Spinnen-Seide zu Kleidung, Ruestungskomponenten oder elastischen Haengebruecken fuer die oberen Stadtringe." },
+  { name: "Fleisch-Former", description: "Braut die Traenke der Fleischformung fuer die Desmodu-Tarnung. Riecht permanent nach verbranntem Horn und scharfen Saeuren." },
+  { name: "Echsen-Hirte", description: "Treibt riesige Pack-Echsen durch die Gassen. Dienen als Transportmittel und Fleischquelle fuer die Oberschicht." },
+  { name: "Sklaven-Graveur", description: "Brennt magische Runen oder Brandzeichen in die Haut der Sklaven, um Besitzer-Haeuser zu markieren und Flucht zu verhindern." },
+  { name: "Schatten-Schmied", description: "Schmiedet Waffen aus Drow-Stahl (Adamant-Legierungen), der im Sonnenlicht zerfaellt, im Unterreich aber schaerfer als Diamant ist." },
+  { name: "Opfer-Vorbereiter", description: "Ein niederer Tempeldiener, der Gefangene rasiert, waescht und mit Laehmungsgiften einsprueht fuer Rituale zu Lolth." },
+  { name: "Echo-Lauscher", description: "Wachen, die an Hoehlendecken sitzen und Hoehrrohre nutzen, um Erschuetterungen oder geheime Absprachen in tiefen Gassen aufzuspueren." },
+  { name: "Toten-Verwerter", description: "Sammelt Leichen verbrauchter Sklaven ein. Fuettert sie an Riesenspinnen-Brut oder uebergibt sie Nekromanten fuer Zombiarbeit in den Minen." }
+]
+
+const atmosphere = {
+  smells: [
+    "Stechende Giftchemikalien",
+    "Weihrauch",
+    "Sklavenschweiss",
+    "Ranziges Pilzbier"
+  ],
+  sounds: [
+    "Fernes Peitschenknallen",
+    "Das Zischen von Riesenspinnen",
+    "Das monotone Summen von Gebeten"
+  ],
+  dangers: [
+    "Drow besitzen Dunkelsicht auf 36 m",
+    "Die Spieler sind in der Dunkelheit taghell sichtbar",
+    "Jedes Fluestern faellt auf"
+  ]
+}
+
 export function DistrictsSection() {
-  const [activeDistrict, setActiveDistrict] = useState(districts[0])
+  const [activeImage, setActiveImage] = useState(cityImages[0])
 
   return (
-    <section id="viertel" className="py-24 px-4">
+    <section id="stadt" className="py-24 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-wide mb-4">Die Vier Viertel</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Die Stadt erstreckt sich ueber mehrere Ebenen - von den praechtigen Tuermen der Adelshaeuser bis hinab zu den verrottenden Ruinen der Unterstadt.
+          <h2 className="text-3xl md:text-4xl font-bold tracking-wide mb-4">Die Drow-Stadt: Zul&apos;Chamber</h2>
+          <p className="text-muted-foreground max-w-3xl mx-auto">
+            Drow-Staedte sind keine Ansammlungen von Gebaeuden, sondern architektonische Meisterwerke, 
+            die in gigantische Hoehlensysteme gemeisselt wurden.
           </p>
         </div>
 
-        {/* District tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {districts.map((district) => {
-            const Icon = district.icon
-            return (
-              <button
-                key={district.id}
-                onClick={() => setActiveDistrict(district)}
-                className={`flex items-center gap-2 px-4 py-2 border transition-all tracking-wide text-sm ${
-                  activeDistrict.id === district.id
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span className="hidden sm:inline">{district.name}</span>
-                <span className="sm:hidden">{district.subtitle.split(" ")[0]}</span>
-              </button>
-            )
-          })}
+        {/* City Description */}
+        <div className="grid md:grid-cols-3 gap-6 mb-16">
+          <div className="bg-card border border-border p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold tracking-wide">Vertikalitaet</h3>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Haeuser haengen wie steinerne Stalaktiten von der Decke oder winden sich als filigrane Tuerme an Stalagmiten empor. 
+              Es gibt kaum Gelaender - Drow haben keine Hoehenangst.
+            </p>
+          </div>
+
+          <div className="bg-card border border-border p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Eye className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold tracking-wide">Das Licht</h3>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Es gibt keine Fackeln. Die Stadt badet in einem unheimlichen, kalten Leuchten aus violetter und gruener 
+              Faerie Fire-Magie und biolumineszenten Pilzen.
+            </p>
+          </div>
+
+          <div className="bg-card border border-border p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Skull className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold tracking-wide">Das Material</h3>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Alles besteht aus poliertem, schwarzem Obsidian oder vulkanischem Glas. Ueberall sind Spinnenmotive, 
+              Netze aus Silberdraht und Darstellungen von Lolth eingemeisselt.
+            </p>
+          </div>
         </div>
 
-        {/* Active district details */}
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          <div className="bg-card border border-border p-8">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 bg-primary/10 text-primary">
-                <activeDistrict.icon className="w-8 h-8" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold tracking-wide">{activeDistrict.name}</h3>
-                <p className="text-primary text-sm tracking-widest">{activeDistrict.subtitle}</p>
-              </div>
-            </div>
-
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              {activeDistrict.description}
-            </p>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="p-4 bg-secondary/50">
-                <p className="text-xs text-muted-foreground tracking-wide mb-1">Sicherheit</p>
-                <p className="text-sm font-medium">{activeDistrict.security}</p>
-              </div>
-              <div className="p-4 bg-secondary/50">
-                <p className="text-xs text-muted-foreground tracking-wide mb-1">Beleuchtung</p>
-                <p className="text-sm font-medium">{activeDistrict.lighting}</p>
-              </div>
+        {/* Image Gallery */}
+        <div className="mb-16">
+          <h3 className="text-2xl font-semibold mb-8 text-center tracking-wide">Bereiche der Stadt</h3>
+          
+          {/* Main Image */}
+          <div className="relative aspect-video mb-4 bg-card border border-border overflow-hidden">
+            <Image
+              src={activeImage.src}
+              alt={activeImage.alt}
+              fill
+              className="object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-6">
+              <h4 className="text-xl font-semibold text-foreground mb-2">{activeImage.title}</h4>
+              <p className="text-sm text-muted-foreground">{activeImage.description}</p>
             </div>
           </div>
 
-          <div className="bg-card border border-border p-8">
-            <h4 className="text-lg font-semibold mb-6 tracking-wide">Wichtige Orte</h4>
-            <ul className="space-y-4">
-              {activeDistrict.locations.map((location, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <span className="w-6 h-6 flex items-center justify-center bg-primary/10 text-primary text-xs font-bold shrink-0">
-                    {index + 1}
-                  </span>
-                  <span className="text-muted-foreground text-sm leading-relaxed">{location}</span>
+          {/* Thumbnails */}
+          <div className="grid grid-cols-5 gap-2">
+            {cityImages.map((img) => (
+              <button
+                key={img.id}
+                onClick={() => setActiveImage(img)}
+                className={`relative aspect-video overflow-hidden border-2 transition-all ${
+                  activeImage.id === img.id ? "border-primary" : "border-border hover:border-primary/50"
+                }`}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Atmosphere */}
+        <div className="grid md:grid-cols-3 gap-6 mb-16">
+          <div className="bg-card border border-border p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Volume2 className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold tracking-wide">Gerueche</h3>
+            </div>
+            <ul className="space-y-2">
+              {atmosphere.smells.map((smell, index) => (
+                <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
+                  <span className="text-primary">&bull;</span>
+                  {smell}
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="bg-card border border-border p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Volume2 className="w-5 h-5 text-primary" />
+              <h3 className="font-semibold tracking-wide">Akustik</h3>
+            </div>
+            <ul className="space-y-2">
+              {atmosphere.sounds.map((sound, index) => (
+                <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
+                  <span className="text-primary">&bull;</span>
+                  {sound}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-card border border-border p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertTriangle className="w-5 h-5 text-accent" />
+              <h3 className="font-semibold tracking-wide">Paranoia</h3>
+            </div>
+            <ul className="space-y-2">
+              {atmosphere.dangers.map((danger, index) => (
+                <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
+                  <span className="text-accent">&bull;</span>
+                  {danger}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Moral Warning */}
+        <div className="bg-accent/10 border border-accent/30 p-6 mb-16">
+          <h4 className="text-lg font-semibold text-accent mb-2">Fremdartige Logik</h4>
+          <p className="text-muted-foreground">
+            Mitleid ist ein Verbrechen. Wenn ein Sklave zusammenbricht, hilft ihm niemand - 
+            er wird an Ort und Stelle erstochen, und die Passanten gehen ungeruehrt weiter.
+          </p>
+        </div>
+
+        {/* Professions */}
+        <div>
+          <h3 className="text-2xl font-semibold mb-8 text-center tracking-wide">10 alltaegliche Berufe in Zul&apos;Chamber</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {professions.map((prof, index) => (
+              <div key={index} className="bg-card border border-border p-4">
+                <h4 className="font-semibold text-primary text-sm mb-2">{prof.name}</h4>
+                <p className="text-xs text-muted-foreground leading-relaxed">{prof.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
